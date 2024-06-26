@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diagnóstico del Circuito</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+        .notification {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <div class="d-flex align-items-center mb-4">
+            <img src="/images/logo.svg" alt="Logo" style="height: 50px; margin-right: 20px;">
+        </div>
+        
+        <div class="container"><h1 class="mb-0">Diagnóstico del Circuito</h1></div>
+        
+        <!-- Notificación -->
+        <div style="height: 20px;"></div>
+        <div class="alert alert-info notification" role="alert">
+            <i class="fas fa-exclamation-circle"></i> Seleccione por favor el área donde se encuentra la falla.
+        </div>
+
+        <!-- Mostrar el mapa de Leaflet -->
+        <div id="map"></div>
+
+        <!-- Acordeón para el formulario -->
+        <div class="accordion mt-4" id="diagnosisAccordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-chevron-down"></i> Formulario de Diagnóstico
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#diagnosisAccordion">
+                    <div class="card-body">
+                        <form id="reportForm" action="/diagnosis" method="POST">
+                            <input type="hidden" name="faultId" value="<%= faultId %>">
+                            <input type="hidden" name="x" id="x">
+                            <input type="hidden" name="y" id="y">
+                            
+                            <div class="form-group">
+                                <label>¿Le llega electricidad al circuito?</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="electricity" value="yes" required> Sí
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="electricity" value="no" required> No
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>¿Requiere reemplazo de luminaria?</label><br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="requiresReplacement" value="yes" required> Sí
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="requiresReplacement" value="no" required> No
+                                </div>
+                            </div>
+
+                            <!-- Nueva pregunta: Selección del tipo de luminaria -->
+                            <div class="form-group">
+                                <label>Seleccione el tipo de luminaria:</label>
+                                <select class="form-control" name="lampType" id="lampType" required>
+                                    <option value="" disabled selected>Seleccione una opción</option>
+                                    <option value="tipo1">Tipo 1</option>
+                                    <option value="tipo2">Tipo 2</option>
+                                    <option value="tipo3">Tipo 3</option>
+                                    <option value="tipo4">Tipo 4</option>
+                                    <option value="tipo5">Tipo 5</option>
+                                    <option value="tipo6">Tipo 6</option>
+                                    <option value="tipo7">Tipo 7</option>
+                                    <option value="tipo8">Tipo 8</option>
+                                    <option value="tipo9">Tipo 9</option>
+                                    <option value="tipo10">Tipo 10</option>
+                                </select>
+                                <a href="#" id="lampTypeLink" target="_blank" style="display: none; margin-top: 10px;">Ver Ficha Técnica</a>
+                            </div>
+
+                            <!-- Preguntas adicionales -->
+                            <div class="form-group">
+                                <label>Pregunta adicional 1:</label>
+                                <input type="text" class="form-control" name="additionalQuestion1" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Pregunta adicional 2:</label>
+                                <input type="text" class="form-control" name="additionalQuestion2" required>
+                            </div>
+
+                            <button type="button" class="btn btn-primary" id="openConfirmationModal">
+                                <i class="fas fa-paper-plane"></i> Enviar Diagnóstico
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationModalLabel">Confirmar Envío de Reporte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Está seguro que desea enviar el reporte?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmSubmit">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Crear el mapa de Leaflet
+        const map = L.map('map').setView([0, 0], 2);
+
+        
+
+        // Añadir una capa de mapa base
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Determinar la imagen del croquis y los límites según la ubicación
+        let imageUrl, bounds;
+        const lugar = '<%= fault.lugar %>';
+        if (lugar === 'envasado') {
+            imageUrl = '/images/map/Envasado.jpg';
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis de envasado
+        } else if (lugar === 'logistica') {
+            imageUrl = '/images/map/Logistica.jpg';
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis de logística
+        } else if (lugar === 'bloque frio') {
+            imageUrl = '/images/map/Bloque-frio.jpg';
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis de bloque frio
+        } else if (lugar === 'almacenes') {
+            imageUrl = '/images/map/Almacenes.jpg';
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis de almacenes
+        } else if (lugar === 'mantenimiento') {
+            imageUrl = '/images/map/Mantenimiento.jpg';
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis de mantenimiento
+        } else {
+            imageUrl = '/images/map/default.jpg'; // Imagen por defecto
+            bounds = [[10, 10], [578, 300]]; // Ajusta estos valores según el tamaño de tu croquis por defecto
+        }
+
+        // Añadir la imagen del croquis como una capa de imagen
+        L.imageOverlay(imageUrl, bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        // Añadir un marcador al hacer clic en el mapa
+        let marker;
+        map.on('click', function(e) {
+            const { lat, lng } = e.latlng;
+
+            if (marker) {
+                map.removeLayer(marker);
+            }
+
+            marker = L.marker([lat, lng]).addTo(map);
+            
+            // Guardar las coordenadas en los campos ocultos del formulario
+            document.getElementById('x').value = lat;
+            document.getElementById('y').value = lng;
+        });
+
+        // Escuchar el clic en el botón de abrir el modal de confirmación
+        document.getElementById('openConfirmationModal').addEventListener('click', function() {
+            // Validar si las coordenadas han sido seleccionadas
+            const x = document.getElementById('x').value;
+            const y = document.getElementById('y').value;
+
+            if (!x || !y) {
+                alert('Por favor seleccione una ubicación en el mapa.');
+                return;
+            }
+
+            $('#confirmationModal').modal('show');
+        });
+
+        // Escuchar el clic en el botón de confirmar envío
+        document.getElementById('confirmSubmit').addEventListener('click', function() {
+            document.getElementById('reportForm').submit();
+        });
+
+        // Mostrar la ficha técnica según el tipo de luminaria seleccionado
+        document.getElementById('lampType').addEventListener('change', function() {
+            const lampType = this.value;
+            const lampTypeLink = document.getElementById('lampTypeLink');
+            
+            const lampTypeUrls = {
+                tipo1: '/fichas/tipo1.pdf',
+                tipo2: '/fichas/tipo2.pdf',
+                tipo3: '/fichas/tipo3.pdf',
+                tipo4: '/fichas/tipo4.pdf',
+                tipo5: '/fichas/tipo5.pdf',
+                tipo6: '/fichas/tipo6.pdf',
+                tipo7: '/fichas/tipo7.pdf',
+                tipo8: '/fichas/tipo8.pdf',
+                tipo9: '/fichas/tipo9.pdf',
+                tipo10: '/fichas/tipo10.pdf'
+            };
+
+            if (lampType in lampTypeUrls) {
+                lampTypeLink.href = lampTypeUrls[lampType];
+                lampTypeLink.style.display = 'block';
+            } else {
+                lampTypeLink.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

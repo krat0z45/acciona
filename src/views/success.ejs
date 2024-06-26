@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reporte Enviado</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/acciona.css">
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-success" role="alert">
+            <i class="fas fa-check-circle fa-3x"></i>
+            <h1 class="mt-3">¡Reporte Enviado!</h1>
+            <% if (user) { %>
+            <p>Estimado <%= user.username %>,</p>
+            <% } else { %>
+            <p>Estimado Usuario,</p>
+            <% } %>
+            <p>Su reporte ha sido enviado satisfactoriamente. En breve atenderemos su solicitud.</p>
+            <a href="/summary/<%= faultId %>" class="btn btn-primary">Ver Resumen del Reporte</a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

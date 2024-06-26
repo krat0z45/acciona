@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportar Falla</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/css/acciona.css">
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron text-center">
+            <img src="/images/logo.svg" alt="Logotipo" class="logo">
+            <h1 class="display-4">Sistema de Diagnóstico de luminarias</h1>
+            <p class="lead">Gestiona y diagnostica fallas en tus luminarias de manera eficiente</p>
+        </div>
+
+        <!-- Espacio -->
+        <div style="height: 50px;"></div>
+
+        <h1 class="mb-4 text-center"><i class="fas fa-exclamation-circle"></i> Reportar Falla</h1>
+        <form action="/report" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="reporter"><i class="fas fa-user"></i> Quien reporta:</label>
+                
+                <input type="text" class="form-control" id="reporter" name="reporter" value="<%= user.username %>" readonly required>
+            </div>
+            <div class="form-group">
+                <label for="reportDate"><i class="fas fa-calendar-alt"></i> Fecha de reporte:</label>
+                <input type="date" class="form-control" id="reportDate" name="reportDate" required>
+            </div>
+            <div class="form-group">
+                <label for="priority"><i class="fas fa-flag"></i> Prioridad:</label>
+                <select class="form-control" id="priority" name="priority" required>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="lugar"><i class="fas fa-map-marker-alt"></i> Ubicación:</label>
+                <select class="form-control" id="lugar" name="lugar" required>
+                    <option value="envasado">Envasado</option>
+                    <option value="logistica">Logística</option>
+                    <option value="bloque frio">Bloque Frío</option>
+                    <option value="almacenes">Almacenes</option>
+                    <option value="mantenimiento">Mantenimiento</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="photo"><i class="fas fa-camera"></i> Fotografía de evidencia:</label>
+                <input type="file" class="form-control-file" id="photo" name="photo">
+            </div>
+            <div class="form-group">
+                <label for="description"><i class="fas fa-align-left"></i> Descripción:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

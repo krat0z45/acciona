@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/acciona.css">
+    
+</head>
+<body class="bg-gray-900 text-white">
+    <section class="min-h-screen flex items-center justify-center">
+        <div class="container mx-auto p-4 max-w-md">
+            <div class="bg-gray-800 rounded-lg shadow-lg">
+                <header class="px-6 py-4 border-b border-gray-700">
+                    <h1 class="text-xl font-bold text-center">Registrarse</h1>
+                </header>
+                <div class="px-6 py-4">
+                    <form action="/register" method="post">
+                        <div class="mb-4">
+                            <label class="block text-gray-300 text-sm font-bold mb-2" for="username">Usuario:</label>
+                            <input class="glow-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="text" name="username" id="username" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-300 text-sm font-bold mb-2" for="password">Contraseña:</label>
+                            <input class="glow-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="password" name="password" id="password" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-300 text-sm font-bold mb-2" for="role">Tipo de usuario:</label>
+                            <select class="glow-input shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="role" id="role" required>
+                                <option value="user">Usuario</option>
+                                <option value="admin">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <button class="glow-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline" type="submit">Registrarse</button>
+                        </div>
+                    </form>
+                </div>
+                <footer class="px-6 py-4 border-t border-gray-700 text-center">
+                    <a href="/login" class="text-blue-400 hover:text-blue-600">Iniciar sesión</a>
+                </footer>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

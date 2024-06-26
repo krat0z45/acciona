@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Aplicación Móvil</title>
+  <link rel="stylesheet" href="/css/bulma.min.css">
+  <link rel="stylesheet" href="/css/acciona.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+</head>
+<body>
+  <div class="loading-overlay" id="loadingOverlay">
+    <img class="loading-icon" src="/images/logo.svg" alt="Loading Icon">
+  </div>
+      
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <img src="/images/logo.png" alt="Logotipo">
+      </a>
+      <div class="navbar-end">
+        <a class="navbar-burger" id="navbarBurger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Additional Navbar Buttons -->
+    <div class="navbar-buttons">
+      <!-- Agrega aquí los botones adicionales si los necesitas -->
+    </div>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar is-hidden-sidebar" id="sidebar">
+    <aside class="menu">
+      <p class="menu-label">General</p>
+      <ul class="menu-list">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/report">Reportar Falla</a></li>
+        <li><a href="/profile">Editar Perfil</a></li>
+        <li><a href="/logout">Cerrar Sesión</a></li>
+        <% if (user && user.role === 'admin') { %>
+        <p class="menu-label">Admin</p>
+      <ul class="menu/list">
+        <li><a href="/register">Generar Cuenta</a></li>
+        <li><a href="/list">Ver reportes</a></li>
+        <li><a href="#">Evidencias</a></li>
+        <li><a href="#">Categorías</a></li>
+        <li><a href="#">Configuración</a></li>
+      </ul>
+      <% } %>
+      </ul>
+    </aside>
+  </div>
+  <div class="overlay is-hidden-sidebar" id="overlay"></div>
+
+  <!-- Main Content -->
+  <section class="section">
+    <div class="container">
+      <div class="card">
+        <div class="card-content">
+          <% if (user) { %>
+            <p class="title">Bienvenido, <%= user.username %></p>
+          <% } else { %>
+            <p class="title">Bienvenido a Mi Aplicación Móvil</p>
+            <p class="subtitle">Por favor, <a href="/login">inicia sesión</a>.</p>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+<!-- Bottom Navigation -->
+<div class="fixed-bottom-menu">
+  <button class="button is-white">
+    <a href="/" style="text-decoration: none;">
+      <span class="icon is-large"><i class="fas fa-home"></i></span>
+    </a>
+  </button>
+  <button class="button is-white" id="notifications-button">
+    <a href="<%= user && user.role === 'admin' ? '/notifications' : '/report' %>" style="text-decoration: none;">
+      <% if (user && user.role === 'admin') { %>
+        <span class="icon is-large">
+          <i class="fas fa-bell"></i>
+          <span id="notification-counter" class="notification-counter"></span>
+        </span>
+      <% } else { %>
+        <span class="icon is-large">
+          <i class="fas fa-paper-plane"></i>
+        </span>
+      <% } %>
+    </a>
+  </button>
+  <button class="button is-white">
+    <a href="/profile" style="text-decoration: none;">
+      <span class="icon is-large"><i class="fas fa-user-shield"></i></span>
+    </a>
+  </button>
+</div>
+
+
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Ocultar la capa de carga después de un breve retraso
+      setTimeout(function() {
+        document.getElementById("loadingOverlay").style.display = "none";
+      }, 500); // Cambia este valor (en milisegundos) según sea necesario
+
+      document.getElementById('navbarBurger').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.toggle('is-hidden-sidebar');
+        document.getElementById('overlay').classList.toggle('is-hidden-sidebar');
+      });
+
+      document.getElementById('overlay').addEventListener('click', function() {
+        document.getElementById('sidebar').classList.add('is-hidden-sidebar');
+        document.getElementById('overlay').classList.add('is-hidden-sidebar');
+      });
+
+      // Fetch notification count from the server
+      fetch('/api/notifications/count')
+        .then(response => response.json())
+        .then(data => {
+          const notificationCounter = document.getElementById('notification-counter');
+          if (data.count > 0) {
+            notificationCounter.textContent = data.count;
+            notificationCounter.style.display = 'inline';
+          }
+        })
+        .catch(error => console.error('Error fetching notification count:', error));
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Aplicación Móvil</title>
+  <link rel="stylesheet" href="/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      margin: 0; /* Eliminar márgenes */
+      padding: 0; /* Eliminar relleno */
+      background-image: url('/images/clienste1.jpg'); /* Ruta a tu imagen de fondo */
+      background-size: cover; /* Ajuste para cubrir toda la pantalla */
+      background-position: center; /* Posición centrada de la imagen */
+      background-repeat: no-repeat; /* No repetir la imagen */
+    }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .loading-message {
+      font-size: 24px;
+      color: white;
+      margin-right: 10px; /* Espacio entre el texto y la imagen */
+    }
+
+    .loading-icon {
+      animation: spin 1s linear infinite; /* Animación de giro */
+      width: 100px; /* Ancho de la imagen */
+      height: 100px; /* Alto de la imagen */
+    }
+
+    @keyframes spin {
+      from {
+        transform: rotate(0deg); /* Rotación inicial */
+      }
+      to {
+        transform: rotate(360deg); /* Rotación completa */
+      }
+    }
+
+    .fixed-bottom-menu {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f5f5f5;
+      border-top: 1px solid #ddd;
+      display: flex;
+      justify-content: space-around;
+      padding: 1px 0;
+      box-shadow: 0 0 10px rgba(255, 56, 96, 0.5); /* Efecto de glow */
+      transition: box-shadow 0.3s ease-in-out; /* Transición suave para el glow */
+    }
+
+    .fixed-bottom-menu .button {
+      flex-grow: 1;
+      color: #ff3860;
+    }
+    .fixed-bottom-menu .button .icon {
+      color: #ff3860;
+    }
+    .is-hidden-sidebar {
+      display: none;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: rgba(6, 0, 0, 0.918);
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      z-index: 1000;
+    }
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 999;
+    }
+    .navbar {
+      background-color: rgb(145, 255, 77); /* Color semi transparente */
+      background-image: url('/images/fondo.jpg'); /* Ruta a tu imagen de fondo del navbar */
+      background-size: cover; /* Ajuste para cubrir todo el navbar */
+      background-position: center; /* Posición centrada de la imagen */
+      background-repeat: no-repeat; /* No repetir la imagen */
+      display: flex;
+      flex-direction: column;
+    }
+    .navbar .navbar-brand {
+      justify-content: space-between; /* Alineación entre el logotipo y el menú */
+      padding-left: 1rem; /* Ajuste de espaciado */
+      padding-right: 1rem; /* Ajuste de espaciado */
+      background-color: rgba(189, 1, 1, 0.924); /* Color de fondo semi transparente */
+    }
+    .navbar-burger {
+      color: white; /* Color del icono de menú */
+      cursor: pointer; /* Cursor apuntador */
+    }
+    .navbar-burger span {
+      background-color: white; /* Color de las barras del menú */
+    }
+    .navbar-item img {
+      max-height: 3rem;
+    }
+    .card {
+      border-color: #ff3860;
+    }
+    .card .card-content .title {
+      color: #ff3860;
+    }
+    .navbar-buttons {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px 0; /* Incrementar el padding superior e inferior */
+      background-color: rgba(196, 0, 0, 0.924); /* Color de fondo semi transparente */
+      height: 250px; /* Ajustar la altura a tu gusto */
+    }
+    .navbar-buttons .button {
+      background-color: transparent; /* Fondo transparente */
+      color:#D3D3D3; /* Color del texto */
+      border: none;
+      font-size: 1.2rem;
+      transition: background-color 0.3s ease; /* Transición suave */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+    }
+    .navbar-buttons .button:hover {
+      background-color: rgba(216, 0, 0, 0.924); /* Color de fondo semi transparente */
+    }
+    .navbar-buttons .button .icon {
+      margin-bottom: 5px;
+      color: #D3D3D3;
+    }
+    .icon.is-small {
+      font-size: 1rem; /* Tamaño más pequeño para los iconos */
+    }
+
+    @media (max-width: 768px) {
+      .table {
+        display: none;
+      }
+      .mobile-card {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        padding: 1rem;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      .mobile-card h2 {
+        font-size: 1.5rem;
+        color: #ff3860;
+        margin-bottom: 0.5rem;
+      }
+      .mobile-card p {
+        margin: 0.5rem 0;
+      }
+      .mobile-card-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="#">
+        <img src="/images/logo.png" alt="Logotipo">
+      </a>
+      <div class="navbar-end">
+        <a class="navbar-burger" id="navbarBurger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+
+ <!-- Sidebar -->
+ <div class="sidebar is-hidden-sidebar" id="sidebar">
+  <aside class="menu">
+    <p class="menu-label">General</p>
+    <ul class="menu-list">
+      <li><a href="/">Inicio</a></li>
+      <li><a href="/report">Reportar Falla</a></li>
+      <li><a href="/logout">Cerrar Sesión</a></li>
+      <% if (user && user.role === 'admin') { %>
+      <p class="menu-label">Admin</p>
+    <ul class="menu/list">
+      <li><a href="/register">Generar Cuenta</a></li>
+      <li><a href="/list">Ver reportes</a></li>
+      <li><a href="#">Evidencias</a></li>
+      <li><a href="#">Categorías</a></li>
+      <li><a href="#">Configuración</a></li>
+    </ul>
+    <% } %>
+    </ul>
+  </aside>
+  </div>
+  <div class="overlay is-hidden-sidebar" id="overlay"></div>
+
+  <!-- Main Content -->
+  <section class="section">
+    <div class="container">
+      <!-- Desktop Table -->
+      <div class="table-container">
+        <table class="table is-bordered is-hoverable is-fullwidth">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Reportero</th>
+              <th>Fecha de Reporte</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% reports.forEach(report => { %>
+            <tr>
+              <td><%= report.id %></td>
+              <td><%= report.reporter %></td>
+              <td><%= new Date(report.reportDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+              <td><%= report.description %></td>
+              <td><%= report.status === 'completado' ? 'Completado' : 'Pendiente' %></td>
+              <td class="table-actions">
+                <a href="/summary/<%= report.id %>" class="button is-primary is-small">
+                  <span class="icon"><i class="fas fa-eye"></i></span>
+                  <span>Ver</span>
+                </a>
+                <% if (report.status !== 'completado') { %>
+                <form action="/complete/<%= report.id %>" method="POST" style="display:inline;">
+                  <button type="submit" class="button is-success is-small">
+                    <span class="icon"><i class="fas fa-check"></i></span>
+                    <span>Completar</span>
+                  </button>
+                </form>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <!-- Mobile Cards -->
+      <div class="mobile-cards">
+        <% reports.forEach(report => { %>
+        <div class="mobile-card">
+          <h2>Reporte ID: <%= report.id %></h2>
+          <p><strong>Reportero:</strong> <%= report.reporter %></p>
+          <p><strong>Fecha de Reporte:</strong> <%= new Date(report.reportDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+          <p><strong>Descripción:</strong> <%= report.description %></p>
+          <p><strong>Estado:</strong> <%= report.status === 'completado' ? 'Completado' : 'Pendiente' %></p>
+          <div class="mobile-card-actions">
+            <a href="/summary/<%= report.id %>" class="button is-primary is-small">
+              <span class="icon"><i class="fas fa-eye"></i></span>
+              <span>Ver</span>
+            </a>
+            <% if (report.status !== 'completado') { %>
+            <form action="/complete/<%= report.id %>" method="POST" style="display:inline;">
+              <button type="submit" class="button is-success is-small">
+                <span class="icon"><i class="fas fa-check"></i></span>
+                <span>Completar</span>
+              </button>
+            </form>
+            <% } %>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <nav class="pagination is-centered">
+        <ul class="pagination-list">
+          <% if (currentPage > 1) { %>
+          <li><a class="pagination-link" href="?page=<%= currentPage - 1 %>">&laquo;</a></li>
+          <% } %>
+          <% for (let i = 1; i <= totalPages; i++) { %>
+          <li><a class="pagination-link <%= currentPage === i ? 'is-current' : '' %>" href="?page=<%= i %>"><%= i %></a></li>
+          <% } %>
+          <% if (currentPage < totalPages) { %>
+          <li><a class="pagination-link" href="?page=<%= currentPage + 1 %>">&raquo;</a></li>
+          <% } %>
+        </ul>
+      </nav>
+      <a href="/" class="button is-secondary mt-3">Volver al Inicio</a>
+    </div>
+  </section>
+
+  <!-- Bottom Navigation -->
+  <div class="fixed-bottom-menu">
+    <button class="button is-white"><a href="/" style="text-decoration: none;"><span class="icon is-large"><i class="fas fa-home"></i></span></a></button>
+    <button class="button is-white" id="notifications-button">
+      <a href="/notifications" style="text-decoration: none;">
+        <% if (user && user.role === 'admin') { %>
+        <span class="icon is-large">
+          <i class="fas fa-bell"></i>
+          <span id="notification-counter" class="notification-counter"></span>
+        </span>
+        <% } %>
+      </a>
+    </button>
+    <button class="button is-white"><a href="/profile" style="text-decoration: none;"><span class="icon is-large"><i class="fas fa-user-shield"></i></span></a></button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Ocultar la capa de carga después de un breve retraso
+      setTimeout(function() {
+        document.getElementById("loadingOverlay").style.display = "none";
+      }, 2000); // Cambia este valor (en milisegundos) según sea necesario
+    });
+
+    document.getElementById('navbarBurger').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.toggle('is-hidden-sidebar');
+      document.getElementById('overlay').classList.toggle('is-hidden-sidebar');
+    });
+
+    document.getElementById('overlay').addEventListener('click', function() {
+      document.getElementById('sidebar').classList.add('is-hidden-sidebar');
+      document.getElementById('overlay').classList.add('is-hidden-sidebar');
+    });
+  </script>
+</body>
+</html>

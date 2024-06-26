@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resumen del Diagnóstico</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        #map {
+            height: 500px; /* Ajusta la altura del mapa según tus necesidades */
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid mt-5">
+        <h1 class="mb-4">Resumen del Diagnóstico</h1>
+        
+        <!-- Notificación del estado de la falla -->
+        <div class="alert alert-<%= fault.status === 'completado' ? 'success' : 'warning' %>" role="alert">
+            <i class="fas <%= fault.status === 'completado' ? 'fa-check-circle' : 'fa-exclamation-circle' %>"></i>
+            Estado de la falla: <%= fault.status === 'completado' ? 'Completado' : 'Pendiente' %>
+        </div>
+
+        <!-- Acordeones para detalles del diagnóstico y mapa -->
+        <div class="accordion" id="diagnosisAccordion">
+            <!-- Detalles del diagnóstico -->
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left text-danger" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-info-circle"></i> Detalles del Diagnóstico
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#diagnosisAccordion">
+                    <div class="card-body">
+                        <p><strong><i class="fas fa-exclamation-triangle"></i> Descripción de la falla:</strong> <%= fault.description %></p>
+                        <p><strong><i class="fas fa-map-marker-alt"></i> Ubicación:</strong> <%= fault.lugar %></p>
+                        <p><strong><i class="fas fa-bolt"></i> ¿Le llega electricidad al circuito?:</strong> <%= fault.electricity %></p>
+                        <p><strong><i class="fas fa-lightbulb"></i> ¿Requiere reemplazo de luminaria?:</strong> <%= fault.requiresReplacement %></p>
+                        <p><strong><i class="fas fa-lightbulb"></i> Tipo de Luminaria:</strong> <%= fault.lampType %></p>
+                        <p><strong><i class="fas fa-question-circle"></i> Pregunta Adicional 1:</strong> <%= fault.additionalQuestion1 %></p>
+                        <p><strong><i class="fas fa-question-circle"></i> Pregunta Adicional 2:</strong> <%= fault.additionalQuestion2 %></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mapa -->
+            <div id="map"></div>
+        </div>
+
+        <a href="/" class="btn btn-secondary mt-3">
+            <i class="fas fa-arrow-left"></i> Volver al Inicio
+        </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Crear el mapa de Leaflet sin la capa base
+        const map = L.map('map').setView([0, 0], 0);
+
+        // Determinar la imagen del croquis y los límites según la ubicación
+        let imageUrl, bounds;
+        const lugar = '<%= fault.lugar %>';
+        if (lugar === 'envasado') {
+            imageUrl = '/images/map/Envasado.jpg';
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        } else if (lugar === 'logistica') {
+            imageUrl = '/images/map/Logistica.jpg';
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        } else if (lugar === 'bloque frio') {
+            imageUrl = '/images/map/Bloque-frio.jpg';
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        } else if (lugar === 'almacenes') {
+            imageUrl = '/images/map/Almacenes.jpg';
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        } else if (lugar === 'mantenimiento') {
+            imageUrl = '/images/map/Mantenimiento.jpg';
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        } else {
+            imageUrl = '/images/map/default.jpg'; // Imagen por defecto
+            bounds = [[10, 10], [578, 300]]; // Dimensiones de la imagen en píxeles
+        }
+
+        // Añadir la imagen del croquis como una capa de imagen
+        L.imageOverlay(imageUrl, bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        // Añadir el marcador en las coordenadas guardadas
+        L.marker([<%= fault.x %>, <%= fault.y %>]).addTo(map);
+    </script>
+</body>
+</html>

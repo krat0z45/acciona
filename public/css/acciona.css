@@ -1,0 +1,298 @@
+* Estilo del index */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/images/clienste1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .loading-message {
+    font-size: 24px;
+    color: white;
+    margin-right: 10px;
+  }
+
+  .loading-icon {
+    animation: spin 1s linear infinite;
+    width: 100px;
+    height: 100px;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .fixed-bottom-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    display: flex;
+    justify-content: space-around;
+    padding: 1px 0;
+    box-shadow: 0 0 10px rgba(255, 56, 96, 0.5);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .fixed-bottom-menu .button {
+    flex-grow: 1;
+    color: #ff3860;
+    position: relative; /* Añadido para posicionar el contador */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .fixed-bottom-menu .button .icon {
+    color: #ff3860;
+    position: relative;
+  }
+
+  .fixed-bottom-menu .notification-counter {
+    position: absolute;
+    top: -10px; /* Ajusta la posición vertical del contador */
+    right: -5px; /* Ajusta la posición horizontal del contador */
+    background: rgba(255, 0, 0, 0.239);
+    color: white;
+    border-radius: 50%;
+    padding: 1px 6px; /* Ajusta el padding para el tamaño del contador */
+    font-size: 11px;
+    display: none;
+  }
+
+  .fixed-bottom-menu .button:hover .notification-counter {
+    display: inline;
+  }
+
+  .is-hidden-sidebar {
+    display: none;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    background-color: rgba(6, 0, 0, 0.918);
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    z-index: 1000;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+
+  .navbar {
+    background-color: rgb(145, 255, 77);
+    background-image: url('/images/fondo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .navbar .navbar-brand {
+    justify-content: space-between;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: rgba(189, 1, 1, 0.924);
+  }
+
+  .navbar-burger {
+    color: white;
+    cursor: pointer;
+  }
+
+  .navbar-burger span {
+    background-color: white;
+  }
+
+  .navbar-item img {
+    max-height: 3rem;
+  }
+
+  .card {
+    border-color: #ff3860;
+  }
+
+  .card .card-content .title {
+    color: #ff3860;
+  }
+
+  .navbar-buttons {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
+    background-color: rgba(196, 0, 0, 0.924);
+    height: 250px;
+  }
+
+  .navbar-buttons .button {
+    background-color: transparent;
+    color: #D3D3D3;
+    border: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    position: relative; /* Añadido para posicionar el contador */
+  }
+
+  .navbar-buttons .button:hover {
+    background-color: rgba(216, 0, 0, 0.924);
+  }
+
+  .navbar-buttons .button .icon {
+    margin-bottom: 5px;
+    color: #D3D3D3;
+  }
+
+  .icon.is-small {
+    font-size: 1rem;
+  }
+
+ 
+
+
+
+
+  * Estilo para los reportes (reportfault) */
+.btn {
+    margin-top: 20px;
+}
+  .container {
+    text-align: center;
+    margin-top: 50px;
+}
+.jumbotron {
+    background-color: #007bff;
+    color: #fff;
+    padding: 2rem 1rem;
+    border-radius: 0;
+    margin-bottom: 0;
+}   
+.form-group label {
+    color: #343a40;
+}
+.btn-primary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+.btn-primary:hover {
+    background-color: #1a4463;
+    border-color: #545b62;
+}
+.logo {
+    max-width: 100px;
+    margin-bottom: 20px;
+}
+
+
+
+
+* Estilo para Login */
+
+.glow-input {
+    transition: box-shadow 0.3s ease-in-out;
+}
+.glow-input:focus {
+    box-shadow: 0 0 10px rgba(255, 56, 96, 0.5);
+}
+.glow-button {
+    transition: box-shadow 0.3s ease-in-out;
+}
+.glow-button:hover {
+    box-shadow: 0 0 15px rgba(255, 56, 96, 0.5);
+}
+.semi-transparent {
+    background-color: rgba(135, 0, 0, 0.6);
+}
+.background-image {
+    position: relative;
+    background-image: url("/images/fondo2.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.background-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.603); /* Ajusta el color y la opacidad aquí */
+    z-index: 1;
+}
+.content {
+    position: relative;
+    z-index: 2;
+}
+
+
+
+
+* Estilo para lista*/
+
+@media (max-width: 768px) {
+    .table {
+      display: none;
+    }
+    .mobile-card {
+      display: block;
+      margin-bottom: 1rem;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .mobile-card h2 {
+      font-size: 1.5rem;
+      color: #ff3860;
+      margin-bottom: 0.5rem;
+    }
+    .mobile-card p {
+      margin: 0.5rem 0;
+    }
+    .mobile-card-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1rem;
+    }
+  }
